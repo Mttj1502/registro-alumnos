@@ -1,2 +1,65 @@
-# registro-alumnos
-Este proyecto es para la materia de gestion de proceso de desarrollo de software
+# Registro Alumnos
+
+Este proyecto es para la materia de Gestión de Proceso de Desarrollo de Software
+
+**Nombre del Proyecto**: Automatización del ciclo de integración continua para una aplicación web de gestión escolar.
+
+
+## Objetivo del Proyecto
+
+Diseñar, desarrollar y gestionar un proceso de integración continua y entrega continua (*CI/CD*) utilizando **Jenkins** y **GitHub**, aplicando buenas prácticas de trabajo colaborativo con ramas, commits, pull requests, revisión de código y ejecución automatizada de *jobs* en **Jenkins** para la construcción y despliegue de una aplicación básica de gestión escolar (por ejemplo, registro de alumnos o administración de cursos).
+
+### Requisitos mínimos de la aplicación
+
+- Formulario básico de registro de alumnos.
+- Almacenamiento de datos en archivo JSON o base de datos simple (SQLite).
+- Visualización de lista de estudiantes registrados.
+
+## Equipos de trabajo:
+
+**Equipo 1**: Análisis de requerimientos y diseño de casos de uso / modelado UML.
+
+- Martínez Moreno Javier Jesús (@jjesus-dev)
+- Ramirez Antonar Evelyn Gisela (@GigiAnton39)
+- Torres Trejo Marcos (@Mttj1502)
+- Pendiente (acomodate por orden alfabetico) (acomodate por orden alfabetico)
+
+**Equipo 2**: Desarrollo Backend (API para registro y listado de alumnos).
+
+- Pendiente (acomodate por orden alfabetico)
+- Pendiente (acomodate por orden alfabetico)
+- Pendiente (acomodate por orden alfabetico)
+- Pendiente (acomodate por orden alfabetico)
+
+**Equipo 3**: Desarrollo Frontend (formulario web y vista de listado).
+
+- Pendiente (acomodate por orden alfabetico)
+- Pendiente (acomodate por orden alfabetico)
+- Pendiente (acomodate por orden alfabetico)
+- Pendiente (acomodate por orden alfabetico)
+
+**Equipo 4**: Configuración Jenkins + Integración de repositorios GitHub +
+Documentación del proceso CI/CD.
+
+- Pendiente (acomodate por orden alfabetico)
+- Pendiente (acomodate por orden alfabetico)
+- Pendiente (acomodate por orden alfabetico)
+- Pendiente (acomodate por orden alfabetico)
+
+## Estructura del repositorio
+
+### Documentación
+- Diagrama de clases UML: [Diagrama](https://github.com/jjesus-dev/registro-alumnos/tree/develop/docs/DiagramaClases.png)
+- Casos de Uso: [Diagramas](https://github.com/jjesus-dev/registro-alumnos/tree/develop/docs/casos-uso/diagramas)
+- Arquitectura: MVC, [Diagrama](https://github.com/jjesus-dev/registro-alumnos/blob/develop/docs/DiagramaArquitectura.png)
+
+- Agregar links para lo de **Jenkins**
+
+### Backend
+
+- Poner link a la carpeta del código para el backend
+
+### Frontend
+
+- Poner link a la carpeta del código para el Frontend
+
