@@ -1,110 +1,98 @@
 <?php
-class Alumno {
-    private $conn;
-    private $table = "alumnos";
+require_once __DIR__ . '/../Config/Database.php';
 
-    public function __construct($db) {
-        $this->conn = $db;
+class Alumno
+{
+    private $pdo;
+
+    public function __construct()
+    {
+        $this->pdo = Database::getConnection();
     }
 
-    public function registrar($data) {
-        $sql = "INSERT INTO $this->table (nombre, matricula, grupo, correo, clave_carrera)
+    public function insertar(array $datos)
+    {
+        $sql = "INSERT INTO alumnos (nombre, matricula, grupo, correo, clave_carrera)
                 VALUES (:nombre, :matricula, :grupo, :correo, :clave_carrera)";
-        $stmt = $this->conn->prepare($sql);
-        return $stmt->execute([
-            ':nombre' => $data['nombre'],
-            ':matricula' => $data['matricula'],
-            ':grupo' => $data['grupo'],
-            ':correo' => $data['correo'],
-            ':clave_carrera' => $data['clave_carrera']
-        ]);
+
+        $stmt = $this->pdo->prepare($sql);
+
+        if (!$stmt->execute([
+            ':nombre' => $datos['nombre'],
+            ':matricula' => $datos['matricula'],
+            ':grupo' => $datos['grupo'],
+            ':correo' => $datos['correo'],
+            ':clave_carrera' => $datos['clave_carrera']
+        ])) {
+            throw new Exception("Error al insertar alumno. Puede que la matrícula o correo ya existan.");
+        }
     }
 
-    public function obtenerPrimeros10() {
-        $query = "
-            SELECT a.nombre, a.matricula, a.grupo, a.correo, c.nombre_carrera
-            FROM alumnos a
-            JOIN carreras c ON a.clave_carrera = c.clave_carrera
-            LIMIT 25
-        ";
-        $stmt = $this->conn->prepare($query);
+    // Filtrar alumnos con paginación, filtrando por cuatrimestre basado en primer dígito de grupo
+    public function buscarConFiltros(array $filtros, int $pagina = 1, int $porPagina = 25)
+    {
+        $params = [];
+        $where = [];
+
+        if (!empty($filtros['clave_carrera'])) {
+            $where[] = 'a.clave_carrera = :clave_carrera';
+            $params[':clave_carrera'] = $filtros['clave_carrera'];
+        }
+
+        if (!empty($filtros['grupo'])) {
+            $where[] = 'a.grupo = :grupo';
+            $params[':grupo'] = $filtros['grupo'];
+        }
+
+        if (!empty($filtros['cuatrimestre'])) {
+            // Filtrar por primer dígito de grupo igual a cuatrimestre
+            $where[] = 'LEFT(a.grupo, 1) = :cuatrimestre';
+            $params[':cuatrimestre'] = $filtros['cuatrimestre'];
+        }
+
+        $whereSQL = count($where) ? 'WHERE ' . implode(' AND ', $where) : '';
+
+        // Conteo total
+        $countSql = "SELECT COUNT(*) FROM alumnos a $whereSQL";
+        $stmtCount = $this->pdo->prepare($countSql);
+        $stmtCount->execute($params);
+        $total = $stmtCount->fetchColumn();
+
+        $totalPaginas = ceil($total / $porPagina);
+        $offset = ($pagina - 1) * $porPagina;
+
+        $sql = "SELECT a.*, c.nombre_carrera 
+                FROM alumnos a
+                LEFT JOIN carreras c ON a.clave_carrera = c.clave_carrera
+                $whereSQL
+                ORDER BY a.nombre ASC
+                LIMIT :limit OFFSET :offset";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        foreach ($params as $key => $val) {
+            $stmt->bindValue($key, $val);
+        }
+
+        $stmt->bindValue(':limit', $porPagina, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $alumnos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return [
+            'alumnos' => $alumnos,
+            'total' => $total,
+            'total_paginas' => $totalPaginas,
+            'pagina_actual' => $pagina,
+        ];
     }
 
-    public function listarConCarrera() {
-        $sql = "SELECT a.id_alumno, a.nombre, a.matricula, a.grupo, a.correo, 
-                       c.nombre_carrera 
-                  FROM alumnos a 
-                  LEFT JOIN carreras c ON a.clave_carrera = c.clave_carrera
-              ORDER BY a.nombre ASC";
-        $stmt = $this->conn->query($sql);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    public function obtenerGruposUnicos()
+    {
+        $sql = "SELECT DISTINCT grupo FROM alumnos ORDER BY grupo ASC";
+        $stmt = $this->pdo->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
-
-    public function filtrarYPaginar($filtros, $limite, $offset) {
-    $sql = "SELECT a.nombre, a.matricula, a.grupo, a.correo, c.nombre_carrera
-            FROM alumnos a
-            LEFT JOIN carreras c ON a.clave_carrera = c.clave_carrera
-            WHERE 1=1";
-
-    $params = [];
-
-    if (!empty($filtros['clave_carrera'])) {
-        $sql .= " AND a.clave_carrera = :carrera";
-        $params[':carrera'] = $filtros['clave_carrera'];
-    }
-    if (!empty($filtros['grupo'])) {
-        $sql .= " AND a.grupo = :grupo";
-        $params[':grupo'] = $filtros['grupo'];
-    }
-    if (!empty($filtros['cuatrimestre'])) {
-        $grupoInicio = ((int)$filtros['cuatrimestre']) * 100;
-        $grupoFin = $grupoInicio + 99;
-        $sql .= " AND a.grupo BETWEEN :grupoInicio AND :grupoFin";
-        $params[':grupoInicio'] = $grupoInicio;
-        $params[':grupoFin'] = $grupoFin;
-    }
-
-    $sql .= " ORDER BY a.nombre ASC LIMIT :limite OFFSET :offset";
-    $stmt = $this->conn->prepare($sql);
-
-    foreach ($params as $key => $val) {
-        $stmt->bindValue($key, $val);
-    }
-    $stmt->bindValue(':limite', (int)$limite, PDO::PARAM_INT);
-    $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
-
-    $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
-
-public function contarFiltrados($filtros) {
-    $sql = "SELECT COUNT(*) as total FROM alumnos a WHERE 1=1";
-    $params = [];
-
-    if (!empty($filtros['clave_carrera'])) {
-        $sql .= " AND a.clave_carrera = :carrera";
-        $params[':carrera'] = $filtros['clave_carrera'];
-    }
-    if (!empty($filtros['grupo'])) {
-        $sql .= " AND a.grupo = :grupo";
-        $params[':grupo'] = $filtros['grupo'];
-    }
-    if (!empty($filtros['cuatrimestre'])) {
-        $grupoInicio = ((int)$filtros['cuatrimestre']) * 100;
-        $grupoFin = $grupoInicio + 99;
-        $sql .= " AND a.grupo BETWEEN :grupoInicio AND :grupoFin";
-        $params[':grupoInicio'] = $grupoInicio;
-        $params[':grupoFin'] = $grupoFin;
-    }
-
-    $stmt = $this->conn->prepare($sql);
-    foreach ($params as $key => $val) {
-        $stmt->bindValue($key, $val);
-    }
-
-    $stmt->execute();
-    return $stmt->fetch(PDO::FETCH_ASSOC)['total'] ?? 0;
-}
 }

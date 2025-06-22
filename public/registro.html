@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Registrar Alumno</title>
+</head>
+<body>
+
+<h1>Registrar Alumno</h1>
+
+<form id="formAlumno">
+  <label for="nombre">Nombre:</label><br />
+  <input type="text" id="nombre" name="nombre" required /><br />
+
+  <label for="matricula">Matrícula:</label><br />
+  <input type="text" id="matricula" name="matricula" required /><br />
+
+  <label for="grupo">Grupo:</label><br />
+  <input type="text" id="grupo" name="grupo" required /><br />
+
+  <label for="correo">Correo:</label><br />
+  <input type="email" id="correo" name="correo" required /><br />
+
+  <label for="clave_carrera">Carrera:</label><br />
+  <select id="clave_carrera" name="clave_carrera" required>
+    <option value="">Selecciona una carrera</option>
+    <option value="DGS">Ingeniería en Desarrollo y Gestión de Software</option>
+    <option value="IND">Ingeniería Industrial</option>
+    <option value="LOG">Ingeniería en Logística</option>
+    <!-- Añade más opciones según tu base de datos -->
+  </select><br /><br />
+
+  <button type="submit">Registrar</button>
+</form>
+
+
+
+</body>
+</html>

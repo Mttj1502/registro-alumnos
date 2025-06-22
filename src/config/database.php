@@ -1,20 +1,30 @@
-<?php 
+<?php
 class Database {
-    private $host = "localhost";
-    private $db = "registro_alumnos";
-    private $name = "root";
-    private $pws = "mysql123";
+    private $host = 'localhost';
+    private $db_name = 'registro_alumnos';
+    private $username = 'root';
+    private $password = 'mysql123';
+    private $conexion;
 
+    private static $instance = null;
 
-    public function getConnection(){
-        $conexion = null;
+    private function __construct() {
         try {
-            $conexion = new PDO ("mysql:host=$this->host;dbname=$this->db;charset=utf8",$this->name,$this->pws);
+            $this->conexion = new PDO(
+                "mysql:host={$this->host};dbname={$this->db_name};charset=utf8mb4",
+                $this->username,
+                $this->password
+            );
+            $this->conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            die("Error de conexión a BD: " . $e->getMessage());
         }
-        catch(PDOException $e){
-            die(json_encode(['error' => 'Conexión fallida: ' . $e->getMessage()]));
+    }
+
+    public static function getConnection() {
+        if (self::$instance === null) {
+            self::$instance = new Database();
         }
-        return $conexion;
+        return self::$instance->conexion;
     }
 }
-?>
