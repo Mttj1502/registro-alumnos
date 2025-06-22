@@ -1,37 +1,48 @@
-<!DOCTYPE html>
-<html lang="es">
+<?php
+header('Content-Type: application/json; charset=utf-8');
 
-<head>
-    <meta charset="UTF-8">
-    <title>Registro de Alumnos</title>
-</head>
+require_once __DIR__ . '/../src/Controllers/AlumnoController.php';
+require_once __DIR__ . '/../src/Controllers/CarreraController.php';
+require_once __DIR__ . '/../src/Controllers/AuthController.php';
 
-<body>
+$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$method = $_SERVER['REQUEST_METHOD'];
 
-    <h1>Registro de Alumnos</h1>
+switch ($uri) {
+    case '/login':
+        if ($method === 'POST') {
+            (new AuthController())->login();
+            exit;
+        }
+        break;
 
-    <form action="procesar_registro.php" method="POST">
-        <label for="nombre">Nombre completo:</label><br>
-        <input type="text" id="nombre" name="nombre" required><br><br>
+    case '/carreras':
+        if ($method === 'GET') {
+            (new CarreraController())->listar();
+            exit;
+        }
+        break;
 
-        <label for="matricula">Matrícula:</label><br>
-        <input type="text" id="matricula" name="matricula" required><br><br>
+    case '/alumnos':
+        $controller = new AlumnoController();
+        if ($method === 'GET') {
+            // Si quieres devolver JSON de alumnos sin filtro (opcional)
+            // $controller->listar(); 
+            http_response_code(405);
+            echo json_encode(['error' => 'Método GET no permitido aquí. Usa lista_alumnos.php para la vista.']);
+            exit;
+        } elseif ($method === 'POST') {
+            $controller->registrar();
+            exit;
+        }
+        break;
 
-        <label for="grupo">Grupo:</label><br>
-        <input type="text" id="grupo" name="grupo" required><br><br>
+    default:
+        http_response_code(404);
+        echo json_encode(['error' => 'Ruta no encontrada']);
+        exit;
+}
 
-        <label for="correo">Correo institucional:</label><br>
-        <input type="email" id="correo" name="correo" required><br><br>
-
-        <label for="clave_carrera">Clave de la carrera:</label><br>
-        <input type="text" id="clave_carrera" name="clave_carrera" required><br><br>
-
-        <input type="submit" value="Registrar Alumno">
-    </form>
-
-    <br>
-    <a href="./lista_alumnos.php">Ver lista de alumnos</a>
-
-</body>
-
-</html>
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);

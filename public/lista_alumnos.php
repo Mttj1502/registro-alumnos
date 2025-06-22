@@ -1,9 +1,16 @@
 <?php
-require_once __DIR__ . '/../src/controllers/alumnoController.php';
+require_once __DIR__ . '/../src/controllers/AlumnoController.php';
+
+function obtenerCuatrimestre($grupo) {
+    if (strlen($grupo) >= 4) {
+        return (int) substr($grupo, 0, 2);
+    } else {
+        return (int) substr($grupo, 0, 1);
+    }
+}
 
 $controller = new AlumnoController();
 
-// Filtros y paginación
 $filtros = [
     'clave_carrera' => $_GET['carrera'] ?? '',
     'grupo' => $_GET['grupo'] ?? '',
@@ -21,7 +28,7 @@ $grupos = $controller->obtenerGrupos();
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Lista de Alumnos</title>
 </head>
 
@@ -34,40 +41,42 @@ $grupos = $controller->obtenerGrupos();
         <select name="carrera" id="carrera">
             <option value="">Todas</option>
             <?php foreach ($carreras as $c): ?>
-                <option value="<?= $c['clave_carrera'] ?>" <?= $filtros['clave_carrera'] === $c['clave_carrera'] ? 'selected' : '' ?>>
-                    <?= $c['nombre_carrera'] ?>
+                <option value="<?= htmlspecialchars($c['clave_carrera']) ?>" <?= $filtros['clave_carrera'] === $c['clave_carrera'] ? 'selected' : '' ?>>
+                    <?= htmlspecialchars($c['nombre_carrera']) ?>
                 </option>
             <?php endforeach; ?>
         </select>
+
         <label for="grupo">Grupo:</label>
         <select name="grupo" id="grupo">
             <option value="">Todos</option>
             <?php foreach ($grupos as $g): ?>
-                <option value="<?= $g ?>" <?= $filtros['grupo'] == $g ? 'selected' : '' ?>>
-                    <?= $g ?>
+                <option value="<?= htmlspecialchars($g) ?>" <?= $filtros['grupo'] == $g ? 'selected' : '' ?>>
+                    <?= htmlspecialchars($g) ?>
                 </option>
             <?php endforeach; ?>
         </select>
-
-
 
         <label for="cuatrimestre">Cuatrimestre:</label>
         <select name="cuatrimestre" id="cuatrimestre">
             <option value="">Todos</option>
             <?php for ($i = 1; $i <= 11; $i++): ?>
-                <option value="<?= $i ?>" <?= $filtros['cuatrimestre'] == $i ? 'selected' : '' ?>><?= $i ?></option>
+                <option value="<?= $i ?>" <?= $filtros['cuatrimestre'] == $i ? 'selected' : '' ?>>
+                    <?= $i ?>
+                </option>
             <?php endfor; ?>
         </select>
 
         <button type="submit">Filtrar</button>
     </form>
 
-    <table border="1" cellpadding="5">
+    <table border="1" cellpadding="5" cellspacing="0">
         <thead>
             <tr>
                 <th>Nombre</th>
                 <th>Matrícula</th>
                 <th>Grupo</th>
+                <th>Cuatrimestre</th>
                 <th>Correo</th>
                 <th>Carrera</th>
             </tr>
@@ -79,13 +88,14 @@ $grupos = $controller->obtenerGrupos();
                         <td><?= htmlspecialchars($alumno['nombre']) ?></td>
                         <td><?= htmlspecialchars($alumno['matricula']) ?></td>
                         <td><?= htmlspecialchars($alumno['grupo']) ?></td>
+                        <td><?= htmlspecialchars(obtenerCuatrimestre($alumno['grupo'])) ?></td>
                         <td><?= htmlspecialchars($alumno['correo']) ?></td>
                         <td><?= htmlspecialchars($alumno['nombre_carrera']) ?></td>
                     </tr>
                 <?php endforeach; ?>
             <?php else: ?>
                 <tr>
-                    <td colspan="5">No se encontraron resultados.</td>
+                    <td colspan="6">No se encontraron resultados.</td>
                 </tr>
             <?php endif; ?>
         </tbody>
