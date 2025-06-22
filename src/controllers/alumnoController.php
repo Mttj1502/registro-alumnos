@@ -2,6 +2,9 @@
 require_once __DIR__ . '/../Models/Alumno.php';
 require_once __DIR__ . '/../Models/Carrera.php';
 require_once __DIR__ . '/../Helpers/ResponseHelper.php';
+require_once __DIR__ . '/../Models/Alumno.php';
+require_once __DIR__ . '/../Models/Carrera.php';
+require_once __DIR__ . '/../Helpers/ResponseHelper.php';
 
 class AlumnoController
 {
@@ -54,4 +57,21 @@ class AlumnoController
     {
         return $this->alumnoModel->obtenerGruposUnicos();
     }
+
+    public function registrarDesdeFormulario(array $input)
+{
+    $campos = ['nombre', 'matricula', 'grupo', 'correo', 'clave_carrera'];
+    foreach ($campos as $campo) {
+        if (empty($input[$campo])) {
+            throw new Exception("El campo '$campo' es obligatorio.");
+        }
+    }
+
+    try {
+        $this->alumnoModel->insertar($input);
+    } catch (Exception $e) {
+        throw new Exception("Error al registrar: " . $e->getMessage());
+    }
+}
+
 }
