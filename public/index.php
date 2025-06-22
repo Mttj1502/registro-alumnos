@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Registro de Alumnos</title>
 </head>
+
 <body>
 
     <h1>Registro de Alumnos</h1>
@@ -28,7 +30,8 @@
     </form>
 
     <br>
-    <a href="./public/lista_alumnos.php">Ver lista de alumnos</a>
+    <a href="./lista_alumnos.php">Ver lista de alumnos</a>
 
 </body>
+
 </html>
