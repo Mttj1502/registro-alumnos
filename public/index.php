@@ -38,8 +38,7 @@ switch ($uri) {
         break;
 
     default:
-        http_response_code(404);
-        echo json_encode(['error' => 'Ruta no encontrada']);
+        header("Location: /public/registro.php");
         exit;
 }
 

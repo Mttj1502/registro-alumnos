@@ -10,12 +10,13 @@ class Colaborador
         $this->pdo = Database::getConnection();
     }
 
-    // Buscar colaborador por correo
-    public function buscarPorCorreo(string $correo)
-    {
-        $sql = "SELECT * FROM usuarios_colaboradores WHERE correo = :correo LIMIT 1";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':correo' => $correo]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
+   public function obtenerPorCorreo(string $correo)
+{
+    $sql = "SELECT * FROM usuarios_colaboradores WHERE correo = :correo LIMIT 1";
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->execute([':correo' => $correo]);
+
+    return $stmt->fetch(PDO::FETCH_ASSOC); // incluye contraseña sin hash
+}
+
 }
