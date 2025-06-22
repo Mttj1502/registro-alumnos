@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -5,7 +6,7 @@
   <title>Registrar Alumno</title>
 </head>
 <body>
-
+<?php include 'template.php'; ?>
 <h1>Registrar Alumno</h1>
 
 <?php

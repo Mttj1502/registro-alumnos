@@ -1,6 +1,5 @@
 <?php
 require_once __DIR__ . '/../Models/Colaborador.php';
-require_once __DIR__ . '/../Helpers/ResponseHelper.php';
 
 class AuthController
 {
@@ -11,31 +10,52 @@ class AuthController
         $this->colaboradorModel = new Colaborador();
     }
 
-    // Login de colaborador (POST /login)
-    public function login()
-    {
-        $input = json_decode(file_get_contents('php://input'), true);
+    public function iniciarSesion(string $correo, string $password): bool
+{
+    $colaborador = $this->colaboradorModel->obtenerPorCorreo($correo);
 
-        if (!$input || empty($input['correo']) || empty($input['contrasena'])) {
-            ResponseHelper::sendJson(['error' => 'Correo y contraseña son obligatorios'], 400);
-            return;
-        }
-
-        $usuario = $this->colaboradorModel->buscarPorCorreo($input['correo']);
-
-        if (!$usuario) {
-            ResponseHelper::sendJson(['error' => 'Usuario no encontrado'], 401);
-            return;
-        }
-
-        // Aquí asumimos que la contraseña está guardada en texto plano (no recomendable)
-        // Lo ideal es usar password_hash y password_verify
-        if ($usuario['contrasena'] !== $input['contrasena']) {
-            ResponseHelper::sendJson(['error' => 'Contraseña incorrecta'], 401);
-            return;
-        }
-
-        // Login exitoso (puedes generar token o sesión aquí)
-        ResponseHelper::sendJson(['mensaje' => 'Login exitoso']);
+    if ($colaborador && $colaborador['contrasena'] === $password) {
+        session_start();
+        $_SESSION['colaborador'] = $colaborador['nombre'];
+        return true;
     }
+
+    return false;
+}
+
+
+    public function cerrarSesion()
+    {
+        session_start();
+        session_destroy();
+        header("Location: login.php");
+        exit;
+    }
+
+    public function login()
+{
+    session_start();
+
+    $input = json_decode(file_get_contents("php://input"), true);
+
+    if (!$input || empty($input['correo']) || empty($input['password'])) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Correo y contraseña requeridos']);
+        return;
+    }
+
+    $correo = $input['correo'];
+    $password = $input['password'];
+
+    $colaborador = $this->colaboradorModel->obtenerPorCorreo($correo);
+
+    if ($colaborador && $colaborador['contrasena'] === $password) {
+        $_SESSION['colaborador'] = $colaborador['nombre'];
+        echo json_encode(['mensaje' => 'Inicio de sesión exitoso']);
+    } else {
+        http_response_code(401);
+        echo json_encode(['error' => 'Credenciales inválidas']);
+    }
+}
+
 }

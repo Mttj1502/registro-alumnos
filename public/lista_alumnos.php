@@ -1,4 +1,5 @@
 <?php
+include 'template.php';
 require_once __DIR__ . '/../src/controllers/AlumnoController.php';
 
 function obtenerCuatrimestre($grupo) {
