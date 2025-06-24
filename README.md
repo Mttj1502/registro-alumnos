@@ -49,7 +49,7 @@ Documentación del proceso CI/CD.
 ## Estructura del repositorio
 
 ### Documentación
-- Diagrama de clases UML: [Diagrama](docs/DiagramaClases.png)
+- Diagrama de clases UML: [Diagrama](docs/uml.png)
 - Casos de Uso: [Diagramas](docs/casos-uso/diagramas)
 - Arquitectura: MVC, [Diagrama](docs/DiagramaArquitectura.png)
 
