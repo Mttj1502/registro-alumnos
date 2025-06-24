@@ -33,9 +33,9 @@ Diseñar, desarrollar y gestionar un proceso de integración continua y entrega 
 
 **Equipo 3**: Desarrollo Frontend (formulario web y vista de listado).
 
-- Pendiente (acomodate por orden alfabetico)
-- Pendiente (acomodate por orden alfabetico)
-- Pendiente (acomodate por orden alfabetico)
+- Diaz Báez Marvin Uziel (@Uziel03)
+- Francisco Zamora Diego (@zamdiego)
+- Rodríguez Hernández Gerardo Noe (@Gerardo2799)
 - Pendiente (acomodate por orden alfabetico)
 
 **Equipo 4**: Configuración Jenkins + Integración de repositorios GitHub +
