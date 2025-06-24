@@ -49,9 +49,9 @@ Documentación del proceso CI/CD.
 ## Estructura del repositorio
 
 ### Documentación
-- Diagrama de clases UML: [Diagrama](https://github.com/jjesus-dev/registro-alumnos/tree/develop/docs/DiagramaClases.png)
-- Casos de Uso: [Diagramas](https://github.com/jjesus-dev/registro-alumnos/tree/develop/docs/casos-uso/diagramas)
-- Arquitectura: MVC, [Diagrama](https://github.com/jjesus-dev/registro-alumnos/blob/develop/docs/DiagramaArquitectura.png)
+- Diagrama de clases UML: [Diagrama](docs/DiagramaClases.png)
+- Casos de Uso: [Diagramas](docs/casos-uso/diagramas)
+- Arquitectura: MVC, [Diagrama](docs/DiagramaArquitectura.png)
 
 - Agregar links para lo de **Jenkins**
 
