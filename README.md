@@ -27,8 +27,8 @@ Diseñar, desarrollar y gestionar un proceso de integración continua y entrega 
 **Equipo 2**: Desarrollo Backend (API para registro y listado de alumnos).
 
 - Joshep Dominic Conctreras Soreque (@Dominic-two)
-- Lugo Hernández Fernando (LugoF1)
-- Saucedo Martinez Said (acomodate por orden alfabetico)
+- Lugo Hernández Fernando (@LugoF1)
+- Saucedo Martinez Said (@Bugha271)
 - Pendiente (acomodate por orden alfabetico)
 
 **Equipo 3**: Desarrollo Frontend (formulario web y vista de listado).
