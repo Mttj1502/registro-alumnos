@@ -28,9 +28,8 @@ Diseñar, desarrollar y gestionar un proceso de integración continua y entrega 
 
 - Joshep Dominic Conctreras Soreque (@Dominic-two)
 - Lugo Hernández Fernando (@LugoF1)
-- Saucedo Martinez Said (acomodate por orden alfabetico)
+- Saucedo Martinez Said (@Bugha271)
 - Francisco Zamora Diego (@zamdiego)
-
 
 **Equipo 3**: Desarrollo Frontend (formulario web y vista de listado).
 
