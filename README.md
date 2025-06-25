@@ -22,26 +22,26 @@ Diseñar, desarrollar y gestionar un proceso de integración continua y entrega 
 - Martínez Moreno Javier Jesús (@jjesus-dev)
 - Ramirez Antonar Evelyn Gisela (@GigiAnton39)
 - Torres Trejo Marcos (@Mttj1502)
-- Pendiente (acomodate por orden alfabetico) (acomodate por orden alfabetico)
+- Rodríguez Hernández Gerardo Noe (@Gerardo2799)
 
 **Equipo 2**: Desarrollo Backend (API para registro y listado de alumnos).
 
 - Joshep Dominic Conctreras Soreque (@Dominic-two)
 - Lugo Hernández Fernando (@LugoF1)
 - Saucedo Martinez Said (@Bugha271)
-- Pendiente (acomodate por orden alfabetico)
+- Francisco Zamora Diego (@zamdiego)
 
 **Equipo 3**: Desarrollo Frontend (formulario web y vista de listado).
 
-- Diaz Báez Marvin Uziel (@Uziel03)
-- Francisco Zamora Diego (@zamdiego)
-- Rodríguez Hernández Gerardo Noe (@Gerardo2799)
-- Pendiente (acomodate por orden alfabetico)
+- Hernandez Marquez Moises (@MoyHDZ)
+- Roa Uribe Mauricio (@URIBEMAURICIO)
+- Olvera Reyes Oscar Olvera (@oscar23113)
+- Alvarez Vega Yosef Yael (@Yaael10)
 
 **Equipo 4**: Configuración Jenkins + Integración de repositorios GitHub +
 Documentación del proceso CI/CD.
 
-- Pendiente (acomodate por orden alfabetico)
+- Diaz Báez Marvin Uziel (@Uziel03)
 - Pendiente (acomodate por orden alfabetico)
 - Pendiente (acomodate por orden alfabetico)
 - Pendiente (acomodate por orden alfabetico)
