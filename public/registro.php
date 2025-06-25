@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Registrar Alumno</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <?php include 'template.php'; ?>
