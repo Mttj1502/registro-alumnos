@@ -42,9 +42,9 @@ Diseñar, desarrollar y gestionar un proceso de integración continua y entrega 
 Documentación del proceso CI/CD.
 
 - Diaz Báez Marvin Uziel (@Uziel03)
-- Pendiente (acomodate por orden alfabetico)
-- Pendiente (acomodate por orden alfabetico)
-- Pendiente (acomodate por orden alfabetico)
+- Hernandez Alva Gabriel (@gabohv)
+- Hernandez Chavez Emiliano (acomodate por orden alfabetico)
+- Juarez Nayola Jhostin Uriel (acomodate por orden alfabetico)
 
 ## Estructura del repositorio
 
