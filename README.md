@@ -57,7 +57,7 @@ Documentación del proceso CI/CD.
 
 ### Backend
 
-- Poner link a la carpeta del código para el backend
+- Carpetas Backend servidor: [Backend](/src)
 
 ### Frontend
 
