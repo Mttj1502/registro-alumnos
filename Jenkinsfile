@@ -17,12 +17,13 @@ pipeline {
         }
 
         stage('Test') {
-            steps {
-                echo '🧪 Verificando sintaxis PHP...'
-                bat 'for /R %f in (*.php) do C:\\php\\php.exe -l "%f"'
-                echo '✅ Todos los archivos PHP tienen sintaxis válida.'
-            }
-        }
+    steps {
+        echo '🧪 Verificando sintaxis PHP...'
+        bat 'for /R %%f in (*.php) do C:\\php\\php.exe -l "%%f"'
+        echo '✅ Todos los archivos PHP tienen sintaxis válida.'
+    }
+}
+
 
         stage('Deploy') {
             steps {
