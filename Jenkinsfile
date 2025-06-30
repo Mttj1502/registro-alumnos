@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DEPLOY_DIR = "C:/servidor/registro-alumnos"
-        PHP_PATH = "php"
+        PHP_PATH = "C:/php/php.exe"
     }
 
     stages {
@@ -19,7 +19,7 @@ pipeline {
         stage('Test') {
             steps {
                 echo '🧪 Verificando sintaxis PHP...'
-                bat 'for /R %f in (*.php) do php -l "%f"'
+                bat 'for /R %f in (*.php) do C:\\php\\php.exe -l "%f"'
                 echo '✅ Todos los archivos PHP tienen sintaxis válida.'
             }
         }
@@ -28,17 +28,19 @@ pipeline {
             steps {
                 echo '🚀 Desplegando app...'
 
-                // Detener servidor PHP embebido si existe
+                // Detiene instancias anteriores del servidor PHP si las hay
                 bat 'taskkill /F /IM php.exe || exit 0'
 
-                // Limpiar y copiar archivos al directorio de despliegue
+                // Limpia la carpeta de despliegue
                 bat "rmdir /S /Q %DEPLOY_DIR%"
                 bat "mkdir %DEPLOY_DIR%"
+
+                // Copia el código actualizado
                 bat "xcopy /E /I /Y * %DEPLOY_DIR%"
 
-                // Levantar el servidor embebido en localhost:8000
-                bat "start ${PHP_PATH} -S localhost:8000 -t %DEPLOY_DIR%"
-                echo '✅ Aplicación levantada en http://localhost:8000'
+                // Inicia el servidor embebido de PHP
+                bat "start \"PHP Server\" ${PHP_PATH} -S localhost:8000 -t %DEPLOY_DIR%"
+                echo '✅ Aplicación disponible en http://localhost:8000'
             }
         }
     }
@@ -52,3 +54,4 @@ pipeline {
         }
     }
 }
+
