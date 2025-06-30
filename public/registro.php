@@ -1,4 +1,35 @@
+<?php
+// TODO el PHP que debe correr antes de cualquier salida va aquí:
+session_start();
 
+if (!isset($_SESSION['colaborador'])) {
+    header("Location: login.php");
+    exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['registrar'])) {
+    require_once __DIR__ . '/../src/Controllers/AlumnoController.php';
+
+    $datos = [
+        'nombre' => $_POST['nombre'] ?? '',
+        'matricula' => $_POST['matricula'] ?? '',
+        'grupo' => $_POST['grupo'] ?? '',
+        'correo' => $_POST['correo'] ?? '',
+        'clave_carrera' => $_POST['clave_carrera'] ?? ''
+    ];
+
+    $controller = new AlumnoController();
+
+    try {
+        $controller->registrarDesdeFormulario($datos);
+        header('Location: registro.php?mensaje=Alumno+registrado+correctamente');
+        exit;
+    } catch (Exception $e) {
+        header('Location: registro.php?error=' . urlencode($e->getMessage()));
+        exit;
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -7,11 +38,13 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<?php include 'template.php'; ?>
+<p>Bienvenido, <?php echo htmlspecialchars($_SESSION['colaborador']); ?> | 
+<a href="logout.php">Cerrar sesión</a></p>
+<hr>
+
 <h1>Registrar Alumno</h1>
 
 <?php
-// Mostrar mensaje de éxito o error si se redirige después del registro
 if (isset($_GET['mensaje'])) {
     echo '<p style="color:green;">' . htmlspecialchars($_GET['mensaje']) . '</p>';
 }
@@ -21,6 +54,7 @@ if (isset($_GET['error'])) {
 ?>
 
 <form action="registro.php" method="POST">
+  <!-- formulario igual que antes -->
   <label for="nombre">Nombre:</label><br />
   <input type="text" id="nombre" name="nombre" required /><br />
 
@@ -48,33 +82,3 @@ if (isset($_GET['error'])) {
 </body>
 </html>
 
-<?php
-// 👇 Lógica de registro al final del mismo archivo PHP
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['registrar'])) {
-    require_once __DIR__ . '/../src/Controllers/AlumnoController.php';
-
-    // Convertimos el arreglo POST al formato que espera el controlador
-    $datos = [
-        'nombre' => $_POST['nombre'] ?? '',
-        'matricula' => $_POST['matricula'] ?? '',
-        'grupo' => $_POST['grupo'] ?? '',
-        'correo' => $_POST['correo'] ?? '',
-        'clave_carrera' => $_POST['clave_carrera'] ?? ''
-    ];
-
-    // Creamos el controlador
-    $controller = new AlumnoController();
-
-    // Adaptamos la lógica del método registrar para que no use JSON
-    try {
-        $controller->registrarDesdeFormulario($datos);
-        // Redirigir con mensaje de éxito
-        header('Location: registro.php?mensaje=Alumno+registrado+correctamente');
-        exit;
-    } catch (Exception $e) {
-        // Redirigir con error
-        header('Location: registro.php?error=' . urlencode($e->getMessage()));
-        exit;
-    }
-}
