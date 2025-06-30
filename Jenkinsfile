@@ -39,8 +39,8 @@ pipeline {
                 // Copia todos los archivos al nuevo directorio
                 bat 'xcopy /E /I /Y * "%SERVIDOR_DIR%"'
 
-                // Inicia el servidor PHP usando la carpeta "public" como raíz
-                bat 'start "PHP Server" %PHP_PATH% -S localhost:8000 -t "%SERVIDOR_DIR%\\public"'
+                // Inicia el servidor PHP en background (no bloquea el pipeline)
+                bat 'start /B "" "%PHP_PATH%" -S localhost:8000 -t "%SERVIDOR_DIR%\\public"'
             }
         }
     }
@@ -54,5 +54,6 @@ pipeline {
         }
     }
 }
+
 
 
