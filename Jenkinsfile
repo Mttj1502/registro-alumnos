@@ -3,7 +3,8 @@ pipeline {
 
     environment {
         PHP_PATH = 'C:\\php\\php.exe'
-        DEPLOY_DIR = "C:\\servidor\\registro-alumnos"
+        SERVIDOR_DIR = 'C:\\servidor\\registro-alumnos'
+        REPO_DIR = "${env.WORKSPACE}"
     }
 
     stages {
@@ -17,7 +18,9 @@ pipeline {
         stage('Test') {
             steps {
                 echo '🧪 Verificando sintaxis PHP...'
-                bat 'for /R %%f in (*.php) do C:\\php\\php.exe -l "%%f"'
+                bat '''
+                for /R %%f in (*.php) do C:\\php\\php.exe -l "%%f"
+                '''
                 echo '✅ Todos los archivos PHP tienen sintaxis válida.'
             }
         }
@@ -26,30 +29,28 @@ pipeline {
             steps {
                 echo '🚀 Desplegando app...'
 
-                // Intentamos cerrar procesos php.exe (si están corriendo)
+                // Cierra instancias anteriores si existen (ignora error si no existe)
                 bat 'taskkill /F /IM php.exe || exit 0'
 
-                // Eliminar el directorio de despliegue anterior si existe
-                bat 'rmdir /S /Q "%DEPLOY_DIR%"'
+                // Limpia y crea el nuevo directorio de despliegue
+                bat 'rmdir /S /Q "%SERVIDOR_DIR%" || exit 0'
+                bat 'mkdir "%SERVIDOR_DIR%"'
 
-                // Crear la nueva carpeta de despliegue
-                bat 'mkdir "%DEPLOY_DIR%"'
+                // Copia todos los archivos al nuevo directorio
+                bat 'xcopy /E /I /Y * "%SERVIDOR_DIR%"'
 
-                // Copiar todos los archivos del repositorio a la carpeta de despliegue
-                bat 'xcopy /E /I /Y * "%DEPLOY_DIR%"'
-
-                // Iniciar servidor embebido PHP apuntando a la carpeta deploy
-                bat "start \"PHP Server\" ${PHP_PATH} -S localhost:8000 -t \"%DEPLOY_DIR%\""
+                // Inicia el servidor PHP usando la carpeta "public" como raíz
+                bat 'start "PHP Server" %PHP_PATH% -S localhost:8000 -t "%SERVIDOR_DIR%\\public"'
             }
         }
     }
 
     post {
-        failure {
-            echo '❌ Algo falló en el pipeline.'
-        }
         success {
             echo '✅ CI/CD ejecutado correctamente. App desplegada en http://localhost:8000'
+        }
+        failure {
+            echo '❌ Algo falló en el pipeline.'
         }
     }
 }
